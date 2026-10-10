@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Nossa História | 2 Anos de Amor</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%237C3AED%22><path d=%22M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z%22/></svg>">
+
+  <!-- Google Fonts: Cormorant Garamond (Romântica/Sofisticada) + Plus Jakarta Sans (Moderna/Clean) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Alex+Brush&display=swap" rel="stylesheet">
+
+  <!-- Animate On Scroll (AOS) CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            offwhite: '#F8FAFC',
+            ice: '#F1F5F9',
+            royal: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              200: '#bfdbfe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            },
+            amethyst: {
+              50: '#faf5ff',
+              100: '#f3e8ff',
+              200: '#e9d5ff',
+              300: '#d8b4fe',
+              400: '#c084fc',
+              500: '#a855f7', /* Lilás Brilhante (#A855F7) */
+              600: '#7c3aed', /* Roxo Lilás Vibrante (#7C3AED) */
+              700: '#6d28d9',
+              800: '#5b21b6',
+              900: '#4c1d95',
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            script: ['"Alex Brush"', 'cursive'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Estilos customizados e efeitos -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-[#F8FAFC] text-slate-800 antialiased font-sans min-h-screen selection:bg-royal-100 selection:text-royal-800 relative overflow-x-hidden">
+
+  <!-- Canvas sutil de partículas/brilhos românticos de fundo -->
+  <canvas id="ambient-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
+
+  <!-- Barra discreta de Modo de Depuração / Teste (ativa apenas quando DEBUG_MODE está ativado) -->
+  <aside id="debug-bar" class="hidden fixed bottom-4 right-4 z-50 bg-slate-900/90 text-white px-4 py-3 rounded-2xl shadow-2xl backdrop-blur-md border border-slate-700 text-xs flex items-center gap-3">
+    <div class="flex items-center gap-2">
+      <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span class="font-bold uppercase tracking-wider text-amethyst-300">Modo de Teste Ativo</span>
+    </div>
+    <div class="h-4 w-px bg-slate-700"></div>
+    <button id="toggle-lock-btn" class="hover:bg-slate-800 px-2.5 py-1.5 rounded-lg border border-slate-600 transition-colors text-slate-200 hover:text-white">
+      Simular Bloqueio
+    </button>
+    <button id="unlock-all-btn" class="bg-royal-600 hover:bg-royal-500 text-white font-medium px-2.5 py-1.5 rounded-lg transition-colors">
+      Ver Tudo Liberado
+    </button>
+  </aside>
+
+  <!-- ========================================================
+       2. BLOQUEIO INICIAL E REVELAÇÃO GERAL (OVERLAY GLASSMORPHISM)
+       ======================================================== -->
+  <section id="lock-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-[18px] transition-all duration-1000 min-h-[100dvh] overflow-y-auto">
+    <div class="w-full max-w-lg bg-white/90 backdrop-blur-xl rounded-3xl p-8 sm:p-10 shadow-[0_25px_60px_-15px_rgba(30,64,175,0.25)] border border-white/80 text-center relative overflow-hidden transform transition-all duration-700">
+      
+      <!-- Detalhes decorativos de luz e brilho -->
+      <div class="absolute -top-24 -left-24 w-48 h-48 bg-royal-200/50 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-amethyst-400/25 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- Ícone delicado com anel de pulso -->
+      <div class="relative mx-auto mb-6 w-20 h-20 flex items-center justify-center">
+        <div class="absolute inset-0 rounded-full bg-royal-100/70 animate-ping opacity-75"></div>
+        <div class="relative w-20 h-20 rounded-full bg-gradient-to-tr from-royal-600 to-royal-800 flex items-center justify-center shadow-lg shadow-royal-600/30 text-white">
+          <svg class="w-9 h-9 text-amethyst-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Tag de suspense -->
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amethyst-100 text-amethyst-700 text-xs font-semibold tracking-wider uppercase mb-4 border border-amethyst-200">
+        <span class="w-1.5 h-1.5 rounded-full bg-amethyst-600 animate-pulse"></span>
+        Uma surpresa está sendo guardada
+      </div>
+
+      <!-- Mensagem Carinhosa de Espera -->
+      <h1 class="font-serif text-3xl sm:text-4xl font-bold text-slate-900 mb-3 tracking-tight">
+        Quase na hora, meu amor...
+      </h1>
+      <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-8 max-w-sm mx-auto">
+        Preparei cada detalhe deste espaço com todo o carinho do mundo para celebrar nossa história. Falta muito pouco para revelar o primeiro capítulo!
+      </p>
+
+      <!-- Contador Regressivo do Bloqueio -->
+      <div class="grid grid-cols-4 gap-2 sm:gap-3 mb-8">
+        <div class="bg-slate-50/90 border border-slate-200/80 rounded-2xl p-3 shadow-sm">
+          <span id="lock-days" class="block font-mono text-2xl sm:text-3xl font-extrabold text-royal-800">00</span>
+          <span class="text-[10px] sm:text-xs uppercase font-medium text-slate-500 tracking-wider">Dias</span>
+        </div>
+        <div class="bg-slate-50/90 border border-slate-200/80 rounded-2xl p-3 shadow-sm">
+          <span id="lock-hours" class="block font-mono text-2xl sm:text-3xl font-extrabold text-royal-800">00</span>
+          <span class="text-[10px] sm:text-xs uppercase font-medium text-slate-500 tracking-wider">Horas</span>
+        </div>
+        <div class="bg-slate-50/90 border border-slate-200/80 rounded-2xl p-3 shadow-sm">
+          <span id="lock-minutes" class="block font-mono text-2xl sm:text-3xl font-extrabold text-royal-800">00</span>
+          <span class="text-[10px] sm:text-xs uppercase font-medium text-slate-500 tracking-wider">Min</span>
+        </div>
+        <div class="bg-slate-50/90 border border-slate-200/80 rounded-2xl p-3 shadow-sm">
+          <span id="lock-seconds" class="block font-mono text-2xl sm:text-3xl font-extrabold text-amethyst-600">00</span>
+          <span class="text-[10px] sm:text-xs uppercase font-medium text-slate-500 tracking-wider">Seg</span>
+        </div>
+      </div>
+
+      <!-- Data de Liberação -->
+      <div class="text-xs text-slate-500 flex items-center justify-center gap-1.5 font-medium">
+        <svg class="w-4 h-4 text-royal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+        <span>Liberação: <strong class="text-slate-700" id="lock-target-display">16 de Outubro às 00:00</strong></span>
+      </div>
+
+      <!-- Prompt Romântico de Toque / Áudio (Tap to Enter com Bypass iOS Safari) -->
+      <button id="tap-to-enter-banner" type="button" class="w-full mt-6 p-3.5 rounded-2xl bg-amethyst-50 hover:bg-amethyst-100 border border-amethyst-200/80 flex items-center justify-center gap-2.5 text-xs text-amethyst-900 transition-all shadow-sm active:scale-95 touch-manipulation cursor-pointer">
+        <span class="w-2.5 h-2.5 rounded-full bg-amethyst-600 animate-ping shrink-0"></span>
+        <span class="font-semibold text-center flex items-center justify-center gap-1.5">
+          <span>Toque em qualquer lugar da tela para entrar na nossa história</span>
+          <svg class="w-3.5 h-3.5 text-amethyst-700 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+        </span>
+      </button>
+
+      <!-- Mensagem de rodapé suave -->
+      <p class="font-script text-xl text-royal-800/80 mt-6">Com todo o meu amor, para sempre.</p>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       APLICAÇÃO PRINCIPAL (REVELADA APÓS A CONTAGEM)
+       ======================================================== -->
+  <div id="main-content" class="relative z-10 transition-opacity duration-1000 opacity-0 pointer-events-none flex flex-col min-h-screen">
+
+    <!-- Top Navigation Bar (Minimalista e Elegante) -->
+    <header class="sticky top-0 z-40 bg-white/75 backdrop-blur-md border-b border-slate-200/60 shadow-sm transition-all">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        <a href="#hero" class="flex items-center gap-2.5 group min-h-[44px]">
+          <span class="w-8 h-8 rounded-full bg-royal-100 flex items-center justify-center text-royal-800 group-hover:scale-110 transition-transform">
+            <svg class="w-4 h-4 text-royal-700" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          </span>
+          <span class="font-serif text-xl sm:text-2xl font-bold tracking-tight text-slate-900 group-hover:text-royal-800 transition-colors">
+            Dois Anos de Nós
+          </span>
+        </a>
+
+        <!-- Controles rápidos no topo -->
+        <div class="flex items-center gap-3">
+          <!-- Botão da Trilha Sonora Oficial (KISS - I Was Made For Lovin' You) -->
+          <button id="music-btn" aria-label="Tocar ou pausar trilha sonora" class="min-h-[44px] px-3.5 sm:px-4 py-2 flex items-center gap-2 text-xs font-semibold rounded-full bg-slate-100/90 hover:bg-amethyst-50 text-slate-700 hover:text-amethyst-800 border border-slate-200 hover:border-amethyst-300 transition-all shadow-xs active:scale-95 touch-manipulation cursor-pointer">
+            <div id="music-visualizer" class="flex items-end gap-[2px] h-3.5 w-3.5 justify-center">
+              <span class="eq-bar w-[2px] bg-amethyst-600 rounded-full h-1.5 transition-all"></span>
+              <span class="eq-bar w-[2px] bg-amethyst-600 rounded-full h-3.5 transition-all"></span>
+              <span class="eq-bar w-[2px] bg-amethyst-600 rounded-full h-2 transition-all"></span>
+            </div>
+            <svg id="music-icon" class="w-4 h-4 text-amethyst-600 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+            </svg>
+            <span id="music-text" class="hidden sm:inline">KISS - Lovin' You</span>
+            <span class="sm:hidden text-amethyst-600 font-bold">KISS</span>
+          </button>
+
+          <!-- Botão de scroll para a timeline -->
+          <a href="#timeline-section" class="min-h-[44px] px-4 py-2 flex items-center justify-center text-xs font-semibold rounded-full bg-royal-800 hover:bg-royal-700 text-white shadow-sm hover:shadow transition-all active:scale-95 touch-manipulation">
+            Ver Timeline
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- ========================================================
+         3. HERO SECTION & PAINEL DE CONTADORES E TEMPO
+         ======================================================== -->
+    <main class="flex-grow">
+      <section id="hero" class="relative pt-12 pb-16 sm:pt-20 sm:pb-24 overflow-hidden">
+        <!-- Elementos de luz de fundo -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-royal-200/30 to-amethyst-200/30 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 relative">
+          
+          <!-- Cabeçalho Romântico -->
+          <div class="text-center max-w-3xl mx-auto mb-14">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-royal-50 border border-royal-200/70 text-royal-800 text-xs font-semibold tracking-wider uppercase mb-5 shadow-sm">
+              <svg class="w-3 h-3 text-amethyst-500 inline shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"/></svg>
+              <span>21 de Outubro • Bodas de Algodão (2 Anos)</span>
+              <svg class="w-3 h-3 text-amethyst-500 inline shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"/></svg>
+            </div>
+
+            <h1 class="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold text-slate-900 tracking-tight leading-[1.1] mb-6">
+              Cada segundo ao seu lado é o meu <span class="text-transparent bg-clip-text bg-gradient-to-r from-royal-800 via-royal-600 to-amethyst-600">lugar favorito</span>.
+            </h1>
+
+            <p class="text-slate-600 text-base sm:text-lg lg:text-xl font-normal leading-relaxed max-w-2xl mx-auto">
+              Uma contagem diária repleta de memórias, sorrisos e o amor que cultivamos em 730 dias inesquecíveis.
+            </p>
+          </div>
+
+          <!-- Grade dos Dois Painéis Interativos de Contadores -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch">
+            
+            <!-- PAINEL 1: Contagem Regressiva para os 2 Anos (21 de Outubro) -->
+            <article class="bg-white rounded-3xl p-6 sm:p-8 shadow-[0_15px_35px_-5px_rgba(15,23,42,0.06)] border border-slate-200/80 hover:border-royal-200 transition-all duration-300 relative overflow-hidden group flex flex-col justify-between">
+              <!-- Brilho no topo -->
+              <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-royal-600 via-royal-700 to-royal-800"></div>
+
+              <div>
+                <div class="flex items-center justify-between mb-4">
+                  <div class="flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-xl bg-royal-50 text-royal-700 flex items-center justify-center font-bold text-sm">
+                      <svg class="w-4 h-4 text-royal-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </span>
+                    <span class="text-xs uppercase font-bold text-royal-700 tracking-wider">Contagem Regressiva</span>
+                  </div>
+                  <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Tempo Real
+                  </span>
+                </div>
+
+                <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-900 mb-2">
+                  Rumo aos 2 Anos Juntos
+                </h2>
+                <p class="text-slate-500 text-xs sm:text-sm mb-6">
+                  Tempo exato restante até completarmos oficialmente o nosso 2º aniversário no dia 21 de Outubro.
+                </p>
+
+                <!-- Cards dos Dígitos -->
+                <div class="grid grid-cols-4 gap-2.5 sm:gap-3 my-4">
+                  <div class="bg-slate-50 rounded-2xl p-3 sm:p-4 text-center border border-slate-100 shadow-inner group-hover:bg-royal-50/40 transition-colors">
+                    <span id="countdown-days" class="block font-mono text-2xl sm:text-4xl font-extrabold text-royal-800">00</span>
+                    <span class="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider">Dias</span>
+                  </div>
+                  <div class="bg-slate-50 rounded-2xl p-3 sm:p-4 text-center border border-slate-100 shadow-inner group-hover:bg-royal-50/40 transition-colors">
+                    <span id="countdown-hours" class="block font-mono text-2xl sm:text-4xl font-extrabold text-royal-800">00</span>
+                    <span class="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider">Horas</span>
+                  </div>
+                  <div class="bg-slate-50 rounded-2xl p-3 sm:p-4 text-center border border-slate-100 shadow-inner group-hover:bg-royal-50/40 transition-colors">
+                    <span id="countdown-minutes" class="block font-mono text-2xl sm:text-4xl font-extrabold text-royal-800">00</span>
+                    <span class="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider">Min</span>
+                  </div>
+                  <div class="bg-slate-50 rounded-2xl p-3 sm:p-4 text-center border border-slate-100 shadow-inner group-hover:bg-royal-50/40 transition-colors">
+                    <span id="countdown-seconds" class="block font-mono text-2xl sm:text-4xl font-extrabold text-amethyst-500">00</span>
+                    <span class="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider">Seg</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rodapé do Card 1 -->
+              <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                <span class="flex items-center gap-1.5">
+                  <svg class="w-4 h-4 text-amethyst-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                  </svg>
+                  Marco Final: 21 de Outubro
+                </span>
+                <span id="countdown-status" class="font-medium text-royal-700">Contando os segundos</span>
+              </div>
+            </article>
+
+            <!-- PAINEL 2: Nossa Jornada Juntos (Tempo Total Desde o Início) -->
+            <article class="bg-white rounded-3xl p-6 sm:p-8 shadow-[0_15px_35px_-5px_rgba(15,23,42,0.06)] border border-slate-200/80 hover:border-amethyst-300 transition-all duration-300 relative overflow-hidden group flex flex-col justify-between">
+              <!-- Brilho no topo -->
+              <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-amethyst-400 via-amethyst-500 to-amethyst-600"></div>
+
+              <div>
+                <div class="flex items-center justify-between mb-4">
+                  <div class="flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-xl bg-amethyst-100 text-amethyst-700 flex items-center justify-center font-bold text-sm">
+                      <svg class="w-4 h-4 text-amethyst-700" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    </span>
+                    <span class="text-xs uppercase font-bold text-amethyst-700 tracking-wider">Nossa História</span>
+                  </div>
+
+                  <!-- Botão de Alternar Visualização (Acumulado Total vs Anos/Meses/Dias) -->
+                  <div class="inline-flex p-1 bg-slate-100 rounded-xl text-xs font-semibold">
+                    <button id="view-accumulated-btn" class="px-2.5 py-1 rounded-lg bg-white text-royal-800 shadow-sm transition-all" title="Ver em total de horas e minutos">
+                      Acumulado
+                    </button>
+                    <button id="view-calendar-btn" class="px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition-all" title="Ver em anos, meses e dias">
+                      Calendário
+                    </button>
+                  </div>
+                </div>
+
+                <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-900 mb-2">
+                  Nossa Jornada Juntos
+                </h2>
+                <p class="text-slate-500 text-xs sm:text-sm mb-6">
+                  Tempo acumulado com amor desde o nosso primeiro instante até este exato segundo.
+                </p>
+
+                <!-- MODO ACUMULADO (Horas, Minutos, Segundos totais) -->
+                <div id="journey-accumulated-view" class="space-y-2.5 my-4">
+                  <div class="bg-slate-50 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between border border-slate-100">
+                    <span class="text-xs font-semibold uppercase text-slate-500 tracking-wider">Horas de Amor</span>
+                    <span id="journey-total-hours" class="font-mono text-xl sm:text-2xl font-extrabold text-royal-800">00.000</span>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2.5">
+                    <div class="bg-slate-50 rounded-2xl p-3 sm:p-3.5 text-center border border-slate-100">
+                      <span class="block text-[10px] sm:text-xs font-semibold uppercase text-slate-500 tracking-wider mb-1">Minutos</span>
+                      <span id="journey-total-minutes" class="block font-mono text-lg sm:text-xl font-bold text-slate-800">0</span>
+                    </div>
+                    <div class="bg-slate-50 rounded-2xl p-3 sm:p-3.5 text-center border border-slate-100">
+                      <span class="block text-[10px] sm:text-xs font-semibold uppercase text-slate-500 tracking-wider mb-1">Segundos</span>
+                      <span id="journey-total-seconds" class="block font-mono text-lg sm:text-xl font-bold text-amethyst-600">0</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- MODO CALENDÁRIO (Anos, Meses, Dias, Horas) -->
+                <div id="journey-calendar-view" class="hidden grid grid-cols-4 gap-2.5 sm:gap-3 my-4">
+                  <div class="bg-slate-50 rounded-2xl p-3 sm:p-4 text-center border border-slate-100">
+                    <span id="journey-cal-years" class="block font-mono text-2xl sm:text-3xl font-extrabold text-royal-800">1</span>
+                    <span class="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider">Anos</span>
+                  </div>
+                  <div class="bg-slate-50 rounded-2xl p-3 sm:p-4 text-center border border-slate-100">
+                    <span id="journey-cal-months" class="block font-mono text-2xl sm:text-3xl font-extrabold text-royal-800">11</span>
+                    <span class="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider">Meses</span>
+                  </div>
+                  <div class="bg-slate-50 rounded-2xl p-3 sm:p-4 text-center border border-slate-100">
+                    <span id="journey-cal-days" class="block font-mono text-2xl sm:text-3xl font-extrabold text-royal-800">20</span>
+                    <span class="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider">Dias</span>
+                  </div>
+                  <div class="bg-slate-50 rounded-2xl p-3 sm:p-4 text-center border border-slate-100">
+                    <span id="journey-cal-hours" class="block font-mono text-2xl sm:text-3xl font-extrabold text-amethyst-600">00</span>
+                    <span class="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider">Horas</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rodapé do Card 2 -->
+              <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                <span class="flex items-center gap-1.5">
+                  <svg class="w-4 h-4 text-rose-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
+                  </svg>
+                  Desde 21 de Outubro de 2024
+                </span>
+                <span class="font-medium text-amethyst-700">E contando sem parar</span>
+              </div>
+            </article>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           4. TIMELINE INTERATIVA: TOP 5 MEMÓRIAS (16 A 20 DE OUTUBRO)
+           ======================================================== -->
+      <section id="timeline-section" class="py-16 sm:py-24 bg-white/50 border-t border-slate-200/50 relative">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 relative">
+          
+          <!-- Cabeçalho da Timeline -->
+          <div class="text-center max-w-2xl mx-auto mb-16 sm:mb-20" data-aos="fade-up">
+            <span class="inline-block text-xs font-bold uppercase tracking-widest text-amethyst-600 mb-2">
+              Nossa Contagem Diária Especial
+            </span>
+            <h2 class="font-serif text-3xl sm:text-5xl font-bold text-slate-900 mb-4">
+              Top 5: Nossas Memórias Mais Marcantes
+            </h2>
+            <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+              Cinco dias, cinco capítulos inesquecíveis que nos trouxeram até a véspera do nosso aniversário de 2 anos.
+            </p>
+          </div>
+
+          <!-- Container da Linha do Tempo Vertical -->
+          <div class="relative" id="timeline-wrapper">
+            
+            <!-- Linha Trilha Base (Vertical) -->
+            <div class="absolute left-4 sm:left-1/2 top-4 bottom-4 -translate-x-1/2 w-1 bg-slate-200/80 rounded-full"></div>
+
+            <!-- Linha Guia com Preenchimento Dinâmico (Scroll Progress Tracker) -->
+            <div id="timeline-progress-line" class="absolute left-4 sm:left-1/2 top-4 -translate-x-1/2 w-1 bg-gradient-to-b from-royal-600 via-royal-500 to-amethyst-500 rounded-full shadow-[0_0_12px_rgba(124,58,237,0.4)] transition-[height] duration-150 ease-out" style="height: 0%;"></div>
+
+            <!-- Ponto Luminoso Guia de Progresso -->
+            <div id="timeline-progress-glow" class="absolute left-4 sm:left-1/2 -translate-x-1/2 w-3.5 h-3.5 rounded-full bg-amethyst-400 shadow-[0_0_15px_#A855F7] ring-2 ring-white transition-[top] duration-150 ease-out opacity-0 pointer-events-none z-10" style="top: 1rem;"></div>
+
+            <!-- Lista Renderizada via JavaScript -->
+            <div id="timeline-container" class="space-y-12 sm:space-y-16">
+              <!-- Cards gerados dinamicamente via app.js com base em TIMELINE_DATA -->
+            </div>
+
+          </div>
+
+          <!-- ========================================================
+               PAINEL DE TRANSIÇÃO: "RUMO AO GRANDE DIA (21 DE OUTUBRO)"
+               ======================================================== -->
+          <div id="grand-day-transition-container" class="mt-16 sm:mt-24">
+
+            <!-- ESTADO A: CARTÃO DE SUSPENSE (BLOQUEADO ANTES DE 21/10 00:00) -->
+            <div id="grand-day-locked-card" class="p-[2px] rounded-3xl bg-gradient-to-r from-[#7C3AED] via-[#9333EA] to-[#A855F7] shadow-[0_20px_50px_-10px_rgba(124,58,237,0.25)] max-w-xl mx-auto" data-aos="fade-up">
+              <div class="bg-[#FCFBF7]/95 backdrop-blur-xl rounded-[22px] p-7 sm:p-10 text-center relative overflow-hidden">
+                <!-- Auras de fundo -->
+                <div class="absolute -top-20 -left-20 w-40 h-40 bg-purple-300/30 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-20 -right-20 w-40 h-40 bg-royal-300/25 rounded-full blur-3xl pointer-events-none"></div>
+
+                <!-- Ícone com animação de pulso -->
+                <div class="relative mx-auto mb-5 w-16 h-16 flex items-center justify-center">
+                  <div class="absolute inset-0 rounded-full bg-amethyst-200/70 animate-ping opacity-60"></div>
+                  <div class="relative w-16 h-16 rounded-2xl bg-gradient-to-tr from-amethyst-600 via-purple-600 to-royal-800 flex items-center justify-center shadow-lg shadow-purple-600/30 text-white">
+                    <svg class="w-8 h-8 text-amber-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Tag de Destaque -->
+                <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-100 text-amethyst-800 text-xs font-bold tracking-wider uppercase mb-3 border border-purple-200">
+                  <svg class="w-3.5 h-3.5 text-amethyst-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8L12 2z"/>
+                  </svg>
+                  <span>O Próximo Passo • 21 de Outubro</span>
+                </div>
+
+                <!-- Título de Suspense Solicitado -->
+                <h3 class="font-serif text-2xl sm:text-4xl font-bold text-slate-900 mb-3 tracking-tight">
+                  O Próximo Passo: O Grande Dia
+                </h3>
+
+                <!-- Cronômetro Regressivo com Contagem Ativa em Tempo Real (Horas, Minutos e Segundos) -->
+                <div class="grid grid-cols-4 gap-2 sm:gap-3 max-w-md mx-auto my-6" id="grand-day-timer-grid">
+                  <div class="bg-white/90 border border-purple-200/80 rounded-2xl p-2.5 sm:p-3.5 shadow-sm">
+                    <span id="grand-day-days" class="block font-mono text-2xl sm:text-3xl font-extrabold text-royal-800">00</span>
+                    <span class="text-[10px] sm:text-xs uppercase font-semibold text-slate-500 tracking-wider">Dias</span>
+                  </div>
+                  <div class="bg-white/90 border border-purple-200/80 rounded-2xl p-2.5 sm:p-3.5 shadow-sm">
+                    <span id="grand-day-hours" class="block font-mono text-2xl sm:text-3xl font-extrabold text-royal-800">00</span>
+                    <span class="text-[10px] sm:text-xs uppercase font-semibold text-slate-500 tracking-wider">Horas</span>
+                  </div>
+                  <div class="bg-white/90 border border-purple-200/80 rounded-2xl p-2.5 sm:p-3.5 shadow-sm">
+                    <span id="grand-day-minutes" class="block font-mono text-2xl sm:text-3xl font-extrabold text-royal-800">00</span>
+                    <span class="text-[10px] sm:text-xs uppercase font-semibold text-slate-500 tracking-wider">Minutos</span>
+                  </div>
+                  <div class="bg-white/90 border border-purple-200/80 rounded-2xl p-2.5 sm:p-3.5 shadow-sm">
+                    <span id="grand-day-seconds" class="block font-mono text-2xl sm:text-3xl font-extrabold text-amethyst-600 amethyst-digit-glow">00</span>
+                    <span class="text-[10px] sm:text-xs uppercase font-semibold text-slate-500 tracking-wider">Segundos</span>
+                  </div>
+                </div>
+
+                <!-- Legenda Exata Solicitada -->
+                <p class="text-slate-600 text-xs sm:text-sm leading-relaxed max-w-md mx-auto">
+                  Falta pouco para desbloquear a comemoração oficial de 2 anos, a carta secreta e nossa cápsula do tempo.
+                </p>
+              </div>
+            </div>
+
+            <!-- ESTADO B: O CLÍMAX DO 21 DE OUTUBRO (DESBLOQUEADO QUANDO DATA >= 21/10 00:00 OU DEBUG_MODE = TRUE) -->
+            <div id="grand-day-climax" class="hidden transition-all duration-700 space-y-10 sm:space-y-12 max-w-3xl mx-auto">
+
+              <!-- CARTÃO DO ENVELOPE COM O SELO DE CERA VIRTUAL & CARTA DE AMOR -->
+              <article class="p-7 sm:p-11 rounded-3xl bg-white border-2 border-purple-200/90 shadow-[0_20px_50px_-10px_rgba(124,58,237,0.18)] relative overflow-hidden text-center" data-aos="fade-up">
+                <div class="absolute -top-16 -right-16 w-36 h-36 bg-purple-200/40 rounded-full blur-2xl pointer-events-none"></div>
+
+                <!-- Selo de Celebração -->
+                <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-100 text-amethyst-800 text-xs font-bold uppercase tracking-widest mb-4 border border-purple-300">
+                  <svg class="w-3.5 h-3.5 text-amber-500" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5m14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
+                  </svg>
+                  <span>Bodas de Algodão • 2 Anos de Nós</span>
+                </div>
+
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-slate-900 mb-3 tracking-tight">
+                  O Grande Dia: 21 de Outubro
+                </h2>
+                
+                <p class="font-serif italic text-slate-700 text-sm sm:text-base leading-relaxed max-w-lg mx-auto mb-8">
+                  "730 dias amando cada detalhe seu, aprendendo com você e te escolhendo todos os dias. Eu te amo hoje mais do que ontem, e muito menos do que amanhã!"
+                </p>
+
+                <!-- O ENVELOPE COM O SELO DE CERA VIRTUAL -->
+                <div class="wax-envelope my-6 p-6 sm:p-8 rounded-2xl bg-gradient-to-b from-[#FAF5FF] via-white to-purple-50/60 border border-purple-200/80 max-w-md mx-auto shadow-inner">
+                  <div class="inline-block relative">
+                    <button type="button" onclick="openLoveLetterEnvelope()" id="wax-seal" class="wax-seal-btn" title="Romper o lacre de cera e abrir carta de amor">
+                      <span>2</span>
+                    </button>
+                  </div>
+                  <h4 class="font-serif font-bold text-slate-900 text-lg mt-4 mb-1">
+                    Uma Carta Selada com Amor
+                  </h4>
+                  <p class="font-serif italic text-slate-600 text-xs sm:text-sm mb-4">
+                    Palavras escritas exclusivamente do fundo do meu coração para você.
+                  </p>
+                  <button type="button" onclick="openLoveLetterEnvelope()" class="inline-flex items-center gap-2 text-xs font-bold text-amethyst-800 hover:text-amethyst-900 uppercase tracking-wider bg-white px-5 py-3 min-h-[44px] rounded-full border border-purple-300 shadow-sm hover:shadow-md active:scale-95 transition-all touch-manipulation cursor-pointer">
+                    <span>Toque no lacre para abrir</span>
+                    <svg class="w-4 h-4 text-amethyst-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <!-- Botões de Ação do Clímax -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8 pt-6 border-t border-purple-100">
+                  <button id="celebrate-btn" class="w-full sm:w-auto min-h-[48px] px-7 py-3 rounded-2xl bg-gradient-to-r from-royal-700 via-amethyst-700 to-purple-800 text-white font-bold text-xs tracking-wider uppercase shadow-lg hover:shadow-purple-600/35 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 touch-manipulation cursor-pointer">
+                    <span>Comemorar Nossos 2 Anos!</span>
+                    <svg class="w-4 h-4 text-purple-200" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                  </button>
+
+                  <button id="download-timeline-btn" class="w-full sm:w-auto min-h-[48px] px-7 py-3 rounded-2xl bg-gradient-to-r from-amethyst-600 to-purple-700 text-white font-bold text-xs tracking-wider uppercase shadow-lg hover:shadow-purple-500/35 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 touch-manipulation cursor-pointer">
+                    <svg class="w-4 h-4 text-amethyst-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                    <span>Guardar Nossa Linha do Tempo</span>
+                  </button>
+                </div>
+              </article>
+
+              <!-- CÁPSULA DO TEMPO: ANO 3 (2027) -->
+              <article class="p-7 sm:p-10 rounded-3xl bg-gradient-to-br from-[#FAF5FF] via-white to-[#F5F3FF] border-2 border-purple-200/80 shadow-[0_20px_50px_-10px_rgba(124,58,237,0.12)] relative overflow-hidden" data-aos="fade-up">
+                <div class="absolute -right-10 -bottom-10 w-44 h-44 bg-amethyst-300/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                <!-- Cabeçalho da Cápsula -->
+                <div class="text-center max-w-xl mx-auto mb-6">
+                  <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-gradient-to-tr from-amethyst-600 to-purple-800 flex items-center justify-center text-white shadow-lg shadow-purple-600/25">
+                    <svg class="w-7 h-7 text-amber-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4"/>
+                    </svg>
+                  </div>
+                  <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest text-amethyst-700 bg-purple-100/80 border border-purple-200 mb-2">
+                    <svg class="w-3.5 h-3.5 text-amethyst-600" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8L12 2z"/>
+                    </svg>
+                    <span>Votos para o Futuro • 2026 – 2027</span>
+                  </span>
+                  <h3 class="font-serif text-2xl sm:text-3xl font-bold text-slate-900 mb-2">
+                    Cápsula do Tempo para o Nosso Ano 3
+                  </h3>
+                  <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+                    Nossas promessas, orações e sonhos selados a sete chaves para serem abertos e relembrados no dia 21 de Outubro de 2027.
+                  </p>
+                </div>
+
+                <!-- Promessas e Votos Selados -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mb-6">
+                  <div class="p-4 rounded-2xl bg-white/90 border border-purple-100 shadow-xs text-center">
+                    <div class="w-8 h-8 mx-auto mb-2 rounded-xl bg-purple-50 flex items-center justify-center text-amethyst-600">
+                      <svg class="w-4 h-4 text-amethyst-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                      </svg>
+                    </div>
+                    <h4 class="font-serif font-bold text-slate-800 text-sm mb-1">Mais Risos & Leveza</h4>
+                    <p class="text-slate-500 text-xs leading-relaxed">Continuar rindo das nossas próprias piadas bobas e mantendo o riso solto em qualquer estação.</p>
+                  </div>
+
+                  <div class="p-4 rounded-2xl bg-white/90 border border-purple-100 shadow-xs text-center">
+                    <div class="w-8 h-8 mx-auto mb-2 rounded-xl bg-purple-50 flex items-center justify-center text-amethyst-600">
+                      <svg class="w-4 h-4 text-amethyst-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                      </svg>
+                    </div>
+                    <h4 class="font-serif font-bold text-slate-800 text-sm mb-1">Nosso Cantinho & Sonhos</h4>
+                    <p class="text-slate-500 text-xs leading-relaxed">Dar passos firmes rumo ao nosso lar, às viagens que planejamos e aos sonhos que Deus colocou no coração.</p>
+                  </div>
+
+                  <div class="p-4 rounded-2xl bg-white/90 border border-purple-100 shadow-xs text-center">
+                    <div class="w-8 h-8 mx-auto mb-2 rounded-xl bg-purple-50 flex items-center justify-center text-amethyst-600">
+                      <svg class="w-4 h-4 text-amethyst-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                      </svg>
+                    </div>
+                    <h4 class="font-serif font-bold text-slate-800 text-sm mb-1">Amor que Amadurece</h4>
+                    <p class="text-slate-500 text-xs leading-relaxed">Amar com paciência diária, zelo paciente, diálogo sincero e o aconchego do nosso eterno denguinho.</p>
+                  </div>
+                </div>
+
+                <!-- Campo Interativo de Mensagem para o Ano 3 -->
+                <div class="bg-white/80 rounded-2xl p-4 sm:p-5 border border-purple-200/90 shadow-sm max-w-xl mx-auto">
+                  <label for="time-capsule-input" class="block text-xs font-bold uppercase tracking-wider text-amethyst-800 mb-2">
+                    Deixe uma mensagem pessoal para a cápsula de 2027:
+                  </label>
+                  <textarea id="time-capsule-input" rows="2" placeholder="Escreva aqui uma promessa, oração ou segredo para abrir em 21.10.2027..." class="w-full text-xs sm:text-sm p-3 rounded-xl border border-purple-200 focus:border-amethyst-600 focus:ring-2 focus:ring-purple-200 outline-none resize-none bg-[#FCFBF7] text-slate-800 leading-relaxed"></textarea>
+                  
+                  <div class="mt-3 flex items-center justify-between gap-3">
+                    <span id="time-capsule-status" class="text-[11px] text-slate-500 font-medium italic">
+                      Sua mensagem será guardada no navegador.
+                    </span>
+                    <button id="time-capsule-save-btn" type="button" class="min-h-[40px] px-4 py-2 rounded-xl bg-amethyst-600 hover:bg-amethyst-700 active:scale-95 text-white font-bold text-xs shadow-md transition-all flex items-center gap-1.5 touch-manipulation cursor-pointer">
+                      <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                      </svg>
+                      <span>Selar Mensagem</span>
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ========================================================
+           NOVA SEÇÃO A: ASTRONOMIA & O FIRMAMENTO
+           O Céu Noturno do Nosso Início & As Fases da Lua da Nossa História
+           ======================================================== -->
+      <section id="firmament-section" class="py-16 sm:py-24 bg-gradient-to-b from-[#F8FAFC] via-[#F1F5F9]/60 to-[#F8FAFC] border-t border-slate-200/60 relative overflow-hidden">
+        <!-- Nebulosas de fundo sutis -->
+        <div class="absolute top-1/3 left-10 w-96 h-96 bg-royal-200/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-10 right-10 w-96 h-96 bg-amethyst-300/15 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
+          
+          <!-- Cabeçalho Editorial -->
+          <div class="text-center max-w-2xl mx-auto mb-14 sm:mb-16" data-aos="fade-up">
+            <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-widest text-amethyst-700 bg-amethyst-100/80 border border-amethyst-200 mb-3 shadow-xs">
+              <svg class="w-3.5 h-3.5 text-amethyst-700 inline shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+              <span>O Testemunho dos Céus • 2024 – 2026</span>
+            </span>
+            <h2 class="font-serif text-3xl sm:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
+              Astronomia & O Firmamento
+            </h2>
+            <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+              As estrelas e os ciclos celestes que testemunharam o exato instante em que o nosso amor nasceu e floresceu.
+            </p>
+          </div>
+
+          <!-- Grade Principal da Seção: Mapa Estelar + Fases da Lua -->
+          <div class="space-y-8 sm:space-y-10">
+            
+            <!-- PARTE 1: O Firmamento em 21 de Outubro de 2024 (Mapa Estelar Minimalista) -->
+            <article class="bg-gradient-to-br from-[#0B132B] via-[#0F172A] to-[#1E1B4B] rounded-3xl p-6 sm:p-10 border border-purple-500/30 shadow-[0_25px_60px_-15px_rgba(15,23,42,0.5)] text-white relative overflow-hidden group" data-aos="fade-up">
+              <!-- Brilho estelar ambiente interno -->
+              <div class="absolute -top-32 -right-32 w-80 h-80 bg-royal-500/20 rounded-full blur-3xl pointer-events-none"></div>
+              <div class="absolute -bottom-32 -left-32 w-80 h-80 bg-amethyst-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+              <div class="flex flex-col lg:flex-row items-center gap-8 relative z-10">
+                
+                <!-- Display Visual do Mapa Estelar (SVG Interativo) -->
+                <div class="w-full lg:w-1/2 flex flex-col items-center">
+                  <div class="relative w-64 h-64 sm:w-80 sm:h-80 rounded-full border-2 border-purple-400/40 bg-radial from-slate-900/60 to-slate-950/90 shadow-[0_0_35px_rgba(168,85,247,0.25)] flex items-center justify-center p-3 overflow-hidden">
+                    
+                    <!-- Bússola e Coordenadas Orbitais -->
+                    <div class="absolute inset-2 rounded-full border border-dashed border-purple-300/20 pointer-events-none"></div>
+                    <div class="absolute inset-8 rounded-full border border-purple-300/15 pointer-events-none"></div>
+                    <div class="absolute inset-16 rounded-full border border-dashed border-purple-300/10 pointer-events-none"></div>
+                    
+                    <!-- Linhas dos eixos cardeais celestes -->
+                    <div class="absolute inset-x-0 top-1/2 h-px bg-purple-400/20 pointer-events-none"></div>
+                    <div class="absolute inset-y-0 left-1/2 w-px bg-purple-400/20 pointer-events-none"></div>
+
+                    <!-- Indicadores Cardeais -->
+                    <span class="absolute top-2 text-[10px] font-mono tracking-widest text-purple-300/80 font-bold">N</span>
+                    <span class="absolute bottom-2 text-[10px] font-mono tracking-widest text-purple-300/80 font-bold">S</span>
+                    <span class="absolute left-2.5 text-[10px] font-mono tracking-widest text-purple-300/80 font-bold">O</span>
+                    <span class="absolute right-2.5 text-[10px] font-mono tracking-widest text-purple-300/80 font-bold">L</span>
+
+                    <!-- SVG das Constelações & Estrelas Cintilantes -->
+                    <svg viewBox="0 0 240 240" class="w-full h-full relative z-10">
+                      <!-- Linhas de Constelação 1 (Crux / Cruzeiro do Sul estilizado) -->
+                      <polyline points="120,45 120,95 102,70 138,72" fill="none" stroke="#D8B4FE" stroke-width="1.2" stroke-dasharray="3,3" opacity="0.85"/>
+                      
+                      <!-- Linhas de Constelação 2 (Alinhamento de Órion / Três Marias) -->
+                      <line x1="60" y1="130" x2="80" y2="140" stroke="#A855F7" stroke-width="1.2" stroke-dasharray="2,2" opacity="0.75"/>
+                      <line x1="80" y1="140" x2="100" y2="150" stroke="#A855F7" stroke-width="1.2" stroke-dasharray="2,2" opacity="0.75"/>
+                      <polyline points="45,115 60,130 50,165" fill="none" stroke="#A855F7" stroke-width="1" stroke-dasharray="2,2" opacity="0.5"/>
+                      <polyline points="95,120 100,150 115,160" fill="none" stroke="#A855F7" stroke-width="1" stroke-dasharray="2,2" opacity="0.5"/>
+
+                      <!-- Linhas de Constelação 3 (Corona Borealis / Coroa do Amor) -->
+                      <path d="M 145,145 Q 170,160 195,140" fill="none" stroke="#60A5FA" stroke-width="1.2" stroke-dasharray="3,3" opacity="0.75"/>
+
+                      <!-- Estrelas Notáveis de Maior Magnitude -->
+                      <g class="star-group">
+                        <!-- Alfa Crucis -->
+                        <circle cx="120" cy="45" r="3.2" fill="#FFFFFF" class="star-twinkle-1"/>
+                        <circle cx="120" cy="45" r="6" fill="#93C5FD" opacity="0.4" class="star-pulse-slow"/>
+                        <!-- Beta Crucis -->
+                        <circle cx="102" cy="70" r="2.8" fill="#F8FAFC" class="star-twinkle-2"/>
+                        <!-- Gama Crucis -->
+                        <circle cx="120" cy="95" r="2.8" fill="#E9D5FF" class="star-twinkle-3"/>
+                        <!-- Delta Crucis -->
+                        <circle cx="138" cy="72" r="2.5" fill="#FFFFFF" class="star-twinkle-1"/>
+                        
+                        <!-- Três Marias / Cinturão -->
+                        <circle cx="60" cy="130" r="2.7" fill="#67E8F9" class="star-twinkle-2"/>
+                        <circle cx="80" cy="140" r="2.9" fill="#FFFFFF" class="star-twinkle-1"/>
+                        <circle cx="100" cy="150" r="2.7" fill="#67E8F9" class="star-twinkle-3"/>
+                        
+                        <!-- Sirius / A Estrela Mais Brilhante -->
+                        <circle cx="170" cy="75" r="4.2" fill="#FFFFFF" class="star-twinkle-1"/>
+                        <circle cx="170" cy="75" r="9" fill="#A855F7" opacity="0.45" class="star-pulse-slow"/>
+
+                        <!-- Estrelas da Coroa -->
+                        <circle cx="145" cy="145" r="2.4" fill="#E9D5FF" class="star-twinkle-2"/>
+                        <circle cx="170" cy="158" r="2.8" fill="#FDE047" class="star-twinkle-3"/>
+                        <circle cx="195" cy="140" r="2.4" fill="#E9D5FF" class="star-twinkle-1"/>
+
+                        <!-- Multidão de Pequenas Estrelas de Fundo (Magnitude 5-6) -->
+                        <circle cx="35" cy="60" r="1.2" fill="#FFFFFF" opacity="0.7"/>
+                        <circle cx="50" cy="40" r="1" fill="#FFFFFF" opacity="0.5"/>
+                        <circle cx="85" cy="30" r="1.4" fill="#93C5FD" opacity="0.8"/>
+                        <circle cx="155" cy="35" r="1.1" fill="#FFFFFF" opacity="0.6"/>
+                        <circle cx="190" cy="55" r="1.3" fill="#FFFFFF" opacity="0.75"/>
+                        <circle cx="210" cy="90" r="1" fill="#FFFFFF" opacity="0.5"/>
+                        <circle cx="185" cy="115" r="1.4" fill="#E9D5FF" opacity="0.8"/>
+                        <circle cx="205" cy="170" r="1.2" fill="#FFFFFF" opacity="0.6"/>
+                        <circle cx="160" cy="195" r="1.1" fill="#FFFFFF" opacity="0.7"/>
+                        <circle cx="130" cy="210" r="1.3" fill="#93C5FD" opacity="0.8"/>
+                        <circle cx="75" cy="190" r="1.2" fill="#FFFFFF" opacity="0.6"/>
+                        <circle cx="40" cy="170" r="1" fill="#FFFFFF" opacity="0.5"/>
+                        <circle cx="25" cy="110" r="1.3" fill="#FFFFFF" opacity="0.75"/>
+                        <circle cx="95" cy="85" r="1.5" fill="#E9D5FF" opacity="0.85"/>
+                        <circle cx="140" cy="110" r="1.2" fill="#FFFFFF" opacity="0.6"/>
+                      </g>
+                    </svg>
+                  </div>
+                  
+                  <span class="mt-3 text-[11px] font-mono tracking-wider text-purple-300/80 uppercase">
+                    Firmamento em 21.10.2024 • 00:00:00
+                  </span>
+                </div>
+
+                <!-- Conteúdo Textual & Frase Editorial -->
+                <div class="w-full lg:w-1/2 text-center lg:text-left">
+                  <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-900/50 border border-purple-500/40 text-purple-200 text-xs font-semibold mb-4">
+                    <span class="w-2 h-2 rounded-full bg-amethyst-400 animate-ping"></span>
+                    <span>O Céu da Noite em que Tudo Começou</span>
+                  </div>
+
+                  <h3 class="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 leading-tight">
+                    "O céu brilhava exatamente sob este traçado na noite em que os nossos caminhos se uniram."
+                  </h3>
+
+                  <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6 font-normal">
+                    Muito antes de darmos o primeiro passo, cada estrela já ocupava a sua órbita. Naquela noite mágica de 21 de Outubro, as constelações desenhavam no firmamento o cenário perfeito para acolher o nascimento da nossa história.
+                  </p>
+
+                  <!-- Metadados Astronômicos Elegantes -->
+                  <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-4 border-t border-purple-500/20 text-left">
+                    <div class="bg-white/5 rounded-xl p-3 border border-white/10">
+                      <span class="text-[10px] uppercase font-mono tracking-wider text-purple-300 block">Data Registada</span>
+                      <strong class="text-xs sm:text-sm font-semibold text-white">21 Out 2024</strong>
+                    </div>
+                    <div class="bg-white/5 rounded-xl p-3 border border-white/10">
+                      <span class="text-[10px] uppercase font-mono tracking-wider text-purple-300 block">Constelação Guia</span>
+                      <strong class="text-xs sm:text-sm font-semibold text-white">Crux / Órion</strong>
+                    </div>
+                    <div class="col-span-2 sm:col-span-1 bg-white/5 rounded-xl p-3 border border-white/10">
+                      <span class="text-[10px] uppercase font-mono tracking-wider text-purple-300 block">Duração Cósmica</span>
+                      <strong class="text-xs sm:text-sm font-semibold text-white">730 Dias Juntos</strong>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </article>
+
+            <!-- PARTE 2: As Fases da Lua da Nossa História (Lado a Lado) -->
+            <article class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-[0_15px_35px_-5px_rgba(15,23,42,0.06)] hover:border-amethyst-300 transition-all" data-aos="fade-up">
+              
+              <div class="text-center max-w-xl mx-auto mb-8 sm:mb-10">
+                <span class="text-xs font-bold uppercase tracking-widest text-amethyst-700 bg-purple-50 px-3 py-1 rounded-full border border-purple-200 inline-block mb-2">
+                  Ciclos Lunares do Amor
+                </span>
+                <h3 class="font-serif text-2xl sm:text-3xl font-bold text-slate-900 mb-2">
+                  As Fases da Lua da Nossa História
+                </h3>
+                <p class="text-slate-500 text-xs sm:text-sm">
+                  A dança silenciosa da lua conectando o instante em que começamos ao momento em que celebramos 2 anos.
+                </p>
+              </div>
+
+              <!-- Comparativo Lado a Lado das Luas -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-3xl mx-auto mb-8">
+                
+                <!-- Lua 1: Início do Namoro (21 de Outubro de 2024) -->
+                <div class="p-6 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-950 text-white border border-purple-500/30 shadow-lg text-center flex flex-col items-center">
+                  <div class="relative w-28 h-28 sm:w-32 sm:h-32 mb-4 flex items-center justify-center">
+                    <!-- Corona / Glow Lunar Lilás -->
+                    <div class="absolute inset-0 rounded-full bg-amethyst-400/25 blur-xl"></div>
+                    <!-- Lua SVG: Gibosa Minguante (~84% iluminação) -->
+                    <div class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-slate-800 shadow-[inset_-8px_-8px_16px_rgba(0,0,0,0.8)] overflow-hidden border border-purple-300/40">
+                      <!-- Área iluminada em forma de Gibosa Minguante -->
+                      <div class="absolute inset-0 bg-[#E2E8F0] rounded-full shadow-[0_0_15px_rgba(255,255,255,0.6)]"></div>
+                      <!-- Sombra minguante na extremidade direita -->
+                      <div class="absolute top-0 right-0 bottom-0 w-8 bg-slate-950/90 rounded-l-full blur-[1px]"></div>
+                      <!-- Texturas de crateras lunares -->
+                      <div class="absolute top-4 left-6 w-3 h-3 rounded-full bg-slate-300/60 shadow-inner"></div>
+                      <div class="absolute bottom-6 left-8 w-4 h-4 rounded-full bg-slate-300/50 shadow-inner"></div>
+                      <div class="absolute top-10 left-12 w-2 h-2 rounded-full bg-slate-300/40"></div>
+                      <div class="absolute bottom-10 left-4 w-2.5 h-2.5 rounded-full bg-slate-300/50"></div>
+                    </div>
+                  </div>
+
+                  <span class="inline-block px-3 py-0.5 rounded-full bg-purple-900/60 text-amethyst-300 text-[11px] font-bold uppercase tracking-wider mb-2 border border-purple-400/30">
+                    O Primeiro Sim
+                  </span>
+                  <h4 class="font-serif text-xl font-bold text-white mb-1">Lua Gibosa Minguante</h4>
+                  <p class="text-slate-400 text-xs mb-3 font-mono">21 de Outubro de 2024 • ~84% Iluminada</p>
+                  <p class="text-slate-300 text-xs leading-relaxed italic">
+                    "Naquela noite, a lua brilhava forte e generosa, iluminando a melhor decisão que já tomamos."
+                  </p>
+                </div>
+
+                <!-- Lua 2: 2 Anos de Amor (21 de Outubro de 2026) -->
+                <div class="p-6 rounded-2xl bg-gradient-to-br from-[#1E1B4B] to-slate-950 text-white border border-amethyst-400/40 shadow-lg text-center flex flex-col items-center">
+                  <div class="relative w-28 h-28 sm:w-32 sm:h-32 mb-4 flex items-center justify-center">
+                    <!-- Corona / Glow Lunar Ametista Vibrante -->
+                    <div class="absolute inset-0 rounded-full bg-amethyst-500/35 blur-xl"></div>
+                    <!-- Lua SVG: Gibosa Crescente (~82% iluminação) -->
+                    <div class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-slate-800 shadow-[inset_8px_8px_16px_rgba(0,0,0,0.8)] overflow-hidden border border-purple-300/50">
+                      <!-- Área iluminada em forma de Gibosa Crescente -->
+                      <div class="absolute inset-0 bg-[#F1F5F9] rounded-full shadow-[0_0_18px_rgba(216,180,254,0.7)]"></div>
+                      <!-- Sombra crescente na extremidade esquerda -->
+                      <div class="absolute top-0 left-0 bottom-0 w-8 bg-slate-950/90 rounded-r-full blur-[1px]"></div>
+                      <!-- Texturas de crateras lunares -->
+                      <div class="absolute top-5 right-6 w-3 h-3 rounded-full bg-purple-200/50 shadow-inner"></div>
+                      <div class="absolute bottom-5 right-8 w-4 h-4 rounded-full bg-purple-200/45 shadow-inner"></div>
+                      <div class="absolute top-11 right-12 w-2 h-2 rounded-full bg-purple-200/40"></div>
+                      <div class="absolute bottom-9 right-4 w-2.5 h-2.5 rounded-full bg-purple-200/45"></div>
+                    </div>
+                  </div>
+
+                  <span class="inline-block px-3 py-0.5 rounded-full bg-purple-900/70 text-purple-200 text-[11px] font-bold uppercase tracking-wider mb-2 border border-purple-400/40">
+                    Bodas de Algodão (2 Anos)
+                  </span>
+                  <h4 class="font-serif text-xl font-bold text-white mb-1">Lua Gibosa Crescente</h4>
+                  <p class="text-purple-300 text-xs mb-3 font-mono">21 de Outubro de 2026 • ~82% Iluminada</p>
+                  <p class="text-slate-300 text-xs leading-relaxed italic">
+                    "Dois anos depois, o ciclo caminha para a plenitude, refletindo o amadurecimento e a força do nosso pacto."
+                  </p>
+                </div>
+
+              </div>
+
+              <!-- Legenda Poética Conectora -->
+              <div class="p-5 sm:p-6 rounded-2xl bg-purple-50/60 border border-purple-200/70 text-center max-w-2xl mx-auto">
+                <p class="font-serif italic text-slate-700 text-sm sm:text-base leading-relaxed">
+                  "Assim como a lua atravessa seus ciclos sem jamais perder sua essência, o nosso amor amadureceu em cada estação. Ao longo de 24 lunações e 730 noites sob o mesmo céu, aprendemos que o brilho mais constante é o afeto que cultivamos todos os dias."
+                </p>
+              </div>
+
+            </article>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ========================================================
+           NOVA SEÇÃO B: NOSSA ALIANÇA SOB A PROVIDÊNCIA DIVINA
+           Fundamentação Teológica Reformada / Presbiteriana
+           ======================================================== -->
+      <section id="providence-section" class="py-16 sm:py-24 bg-gradient-to-b from-[#FCFBF7] via-white to-[#FAF5FF] border-t border-purple-100/90 relative overflow-hidden">
+        <!-- Detalhes de luz de fundo -->
+        <div class="absolute top-20 right-10 w-80 h-80 bg-purple-200/30 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-20 left-10 w-80 h-80 bg-royal-200/20 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
+          
+          <!-- Cabeçalho Teológico & Editorial -->
+          <div class="text-center max-w-2xl mx-auto mb-14" data-aos="fade-up">
+            <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-widest text-amethyst-800 bg-purple-100/90 border border-purple-300/80 mb-3 shadow-xs">
+              <svg class="w-3.5 h-3.5 text-amethyst-700" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M11 2v6H5v4h6v10h4V12h6V8h-6V2h-4z"/>
+              </svg>
+              Soli Deo Gloria • Providência & Aliança
+              <svg class="w-3.5 h-3.5 text-amethyst-700" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M11 2v6H5v4h6v10h4V12h6V8h-6V2h-4z"/>
+              </svg>
+            </span>
+            <h2 class="font-serif text-3xl sm:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
+              Nossa Aliança Sob a Providência Divina
+            </h2>
+            <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+              O reconhecimento de que o nosso amor não é obra do acaso, mas fruto do decreto soberano e da graça imerecida do Senhor.
+            </p>
+          </div>
+
+          <!-- COMPONENTE PRINCIPAL: "O Cordão de Três Dobras" -->
+          <article class="bg-white rounded-3xl p-7 sm:p-11 border-2 border-purple-200/80 shadow-[0_20px_50px_-10px_rgba(124,58,237,0.12)] relative overflow-hidden mb-10" data-aos="fade-up">
+            
+            <!-- Marca d'água sutil sacra -->
+            <div class="absolute -right-8 -bottom-8 text-purple-200/25 select-none pointer-events-none">
+              <svg class="w-36 h-36" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2c-.6 2.5-2.2 4.2-4.5 4.8 1.8 1.1 2.8 2.7 3 4.9.4-.5.8-1 1.5-1.4.7.4 1.1.9 1.5 1.4.2-2.2 1.2-3.8 3-4.9-2.3-.6-3.9-2.3-4.5-4.8zm-1 11.5c-2.4-.2-4.5-.9-6-2.5 1.2 3.1 3.5 4.8 6.5 5.2-.2.6-.3 1.2-.5 1.8h2c-.2-.6-.3-1.2-.5-1.8 3-.4 5.3-2.1 6.5-5.2-1.5 1.6-3.6 2.3-6 2.5v4h2v2H9v-2h2v-4z"/>
+              </svg>
+            </div>
+            <div class="absolute top-4 left-4 text-purple-300/40 select-none pointer-events-none">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M10 2v6H5v3h5v11h4V11h5V8h-5V2h-4z"/>
+              </svg>
+            </div>
+
+            <!-- Ícone Elegante do Cordão Entrelaçado -->
+            <div class="text-center mb-6">
+              <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-amethyst-700 via-purple-600 to-royal-800 flex items-center justify-center text-white shadow-lg shadow-purple-600/25 mb-4">
+                <svg class="w-8 h-8 text-amber-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                </svg>
+              </div>
+              <span class="text-xs font-bold uppercase tracking-widest text-amethyst-700 block">Princípio Bíblico de Aliança</span>
+              <h3 class="font-serif text-2xl sm:text-3xl font-bold text-slate-900 mt-1">O Cordão de Três Dobras</h3>
+            </div>
+
+            <!-- Passagem Bíblica em Destaque Tipográfico -->
+            <blockquote class="my-6 p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-purple-50/80 via-[#FAF5FF] to-royal-50/50 border-l-4 border-amethyst-600 text-center relative shadow-xs">
+              <p class="font-serif text-lg sm:text-2xl italic text-slate-800 leading-relaxed mb-3">
+                "E, se alguém quiser prevalecer contra um, os dois lhe resistirão; e o cordão de três dobras não se quebra tão depressa."
+              </p>
+              <cite class="text-xs sm:text-sm font-bold uppercase tracking-wider text-amethyst-700 block font-sans">
+                — Eclesiastes 4:12
+              </cite>
+            </blockquote>
+
+            <!-- Reflexão Teológica Reformada -->
+            <div class="text-slate-700 font-serif text-sm sm:text-base leading-relaxed space-y-4 max-w-2xl mx-auto text-justify sm:text-center mb-8">
+              <p>
+                Reconhecemos que o nosso amor não nasceu do acaso, mas da providência graciosa do Senhor, que decretou os nossos passos e sustenta os nossos dias. Que Ele continue a ser o centro, o alicerce e a terceira dobra que fortalece a nossa aliança.
+              </p>
+            </div>
+
+            <!-- Três Pilares da Aliança em Cards Refinados -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-purple-100">
+              
+              <div class="p-4 rounded-xl bg-purple-50/50 border border-purple-100 text-center">
+                <div class="w-8 h-8 mx-auto mb-2 rounded-lg bg-purple-100 flex items-center justify-center text-amethyst-700">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 18h18M4 15l2-9 4.5 5 4.5-7 4.5 7 4.5-5 2 9H4z"/>
+                  </svg>
+                </div>
+                <h4 class="font-serif font-bold text-slate-900 text-sm mb-1">Providência Soberana</h4>
+                <p class="text-slate-600 text-xs leading-relaxed">
+                  Deus cruzou os nossos caminhos no Seu conselho perfeito e eterno.
+                </p>
+              </div>
+
+              <div class="p-4 rounded-xl bg-purple-50/50 border border-purple-100 text-center">
+                <div class="w-8 h-8 mx-auto mb-2 rounded-lg bg-purple-100 flex items-center justify-center text-amethyst-700">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M20.24 12.24a6 6 0 00-8.49-8.49L5 10.5V19h8.5zM16 8L2 22M17.5 15H9"/>
+                  </svg>
+                </div>
+                <h4 class="font-serif font-bold text-slate-900 text-sm mb-1">Graça & Perdão</h4>
+                <p class="text-slate-600 text-xs leading-relaxed">
+                  Amar como Cristo nos amou: com paciência, fidelidade e serviço diário.
+                </p>
+              </div>
+
+              <div class="p-4 rounded-xl bg-purple-50/50 border border-purple-100 text-center">
+                <div class="w-8 h-8 mx-auto mb-2 rounded-lg bg-purple-100 flex items-center justify-center text-amethyst-700">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
+                    <circle cx="9" cy="12" r="5"/>
+                    <circle cx="15" cy="12" r="5"/>
+                  </svg>
+                </div>
+                <h4 class="font-serif font-bold text-slate-900 text-sm mb-1">Aliança Sagrada</h4>
+                <p class="text-slate-600 text-xs leading-relaxed">
+                  Um pacto firmado diante do Senhor para a Sua glória e edificação mútua.
+                </p>
+              </div>
+
+            </div>
+
+          </article>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer Romântico Minimalista -->
+    <footer class="bg-white border-t border-slate-200/80 py-10 mt-auto text-center text-xs text-slate-500">
+      <div class="max-w-6xl mx-auto px-4">
+        <p class="font-serif text-lg text-slate-800 mb-2 italic">
+          "O amor não consiste em olhar um para o outro, mas em olhar juntos na mesma direção."
+        </p>
+        <p class="flex items-center justify-center gap-1.5 text-slate-400">
+          Feito com o coração para o meu grande amor • <svg class="w-3.5 h-3.5 text-rose-500 inline fill-current -mt-0.5" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> 2024 – 2026
+        </p>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ========================================================
+       MODAL / LIGHTBOX PARA VISUALIZAÇÃO AMPLIADA DA FOTO
+       ======================================================== -->
+  <div id="image-modal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center p-4 transition-all duration-300">
+    <div class="relative max-w-3xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl border border-white/20 transform transition-transform scale-95">
+      <button id="modal-close-btn" class="absolute top-4 right-4 z-10 w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-black/50 hover:bg-black/75 active:scale-95 text-white flex items-center justify-center backdrop-blur-sm transition-all touch-manipulation cursor-pointer" aria-label="Fechar">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <div class="relative max-h-[70vh] bg-slate-900 flex items-center justify-center overflow-hidden">
+        <img id="modal-image" src="" alt="Foto expandida do casal" class="max-h-[70vh] w-auto max-w-full object-contain">
+      </div>
+
+      <div class="p-6 sm:p-8 bg-white">
+        <span id="modal-date" class="text-xs font-bold uppercase tracking-wider text-royal-700 block mb-1">Data</span>
+        <h3 id="modal-title" class="font-serif text-2xl font-bold text-slate-900 mb-2">Título do Momento</h3>
+        <p id="modal-quote" class="text-slate-600 text-sm sm:text-base italic leading-relaxed">Citação romântica</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       3B. MODAL DA CARTA DE AMOR DO ENVELOPE (DIA 21)
+       ======================================================== -->
+  <div id="love-letter-modal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center p-4 overflow-y-auto transition-all duration-500">
+    <div class="relative max-w-2xl w-full bg-[#FCFBF7] rounded-3xl p-7 sm:p-12 shadow-[0_25px_60px_-15px_rgba(124,58,237,0.3)] border-2 border-purple-200/80 my-8 transform transition-transform scale-95 text-slate-800">
+      
+      <!-- Detalhes de Papel Nobre e Decoração -->
+      <div class="absolute top-4 left-4 text-purple-300/80 select-none">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+      </div>
+      <div class="absolute top-4 right-14 text-purple-300/80 select-none">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+      </div>
+      
+      <button id="letter-close-btn" class="absolute top-4 right-4 w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-purple-100 hover:bg-purple-200 active:scale-95 text-amethyst-800 flex items-center justify-center transition-all touch-manipulation cursor-pointer" aria-label="Fechar Carta">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <!-- Selo de Cera no Topo da Carta -->
+      <div class="text-center mb-6">
+        <div class="w-14 h-14 mx-auto rounded-full bg-gradient-to-tr from-amethyst-700 via-amethyst-600 to-purple-500 text-white font-serif font-bold text-2xl flex items-center justify-center shadow-md shadow-amethyst-600/30 border-2 border-purple-300 mb-3">
+          2
+        </div>
+        <span class="text-xs font-bold uppercase tracking-widest text-amethyst-700 block">Bodas de Algodão • 2 Anos de Amor</span>
+        <h3 class="font-serif text-2xl sm:text-3xl font-bold text-slate-900 mt-1">Para o Amor da Minha Vida</h3>
+      </div>
+
+      <!-- Corpo da Carta de Amor -->
+      <div id="love-letter-content" class="font-serif text-slate-700 text-sm sm:text-base leading-relaxed space-y-4 max-h-[55vh] overflow-y-auto pr-2">
+        <!-- Injetado dinamicamente via app.js com base em LOVE_LETTER_TEXT -->
+      </div>
+
+      <!-- Assinatura Romântica -->
+      <div class="mt-8 pt-4 border-t border-purple-200/70 text-right">
+        <p class="font-script text-2xl text-amethyst-800">Para sempre seu,</p>
+        <p class="font-serif text-xs text-slate-500 uppercase tracking-wider font-semibold">21 de Outubro • Dois Anos Inesquecíveis</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL DE CARREGAMENTO / PROGRESSO DO DOWNLOAD DA IMAGEM
+       ======================================================== -->
+  <div id="download-progress-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl border border-purple-100">
+      <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-purple-50 flex items-center justify-center text-amethyst-600 shadow-xs">
+        <svg class="w-7 h-7 text-amethyst-600 animate-spin" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3.5"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      </div>
+      <h4 class="font-serif text-xl font-bold text-slate-900 mb-1">Eternizando Nossas Memórias...</h4>
+      <p class="text-slate-500 text-xs sm:text-sm">Gerando o arquivo de imagem da nossa linha do tempo em alta qualidade com todo o carinho.</p>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       3D. TEMPLATE DE EXPORTAÇÃO DE ALTA RESOLUÇÃO (HTML2CANVAS)
+       Renderizado de forma invisível/off-screen para gerar o PNG
+       ======================================================== -->
+  <div id="timeline-export-canvas-target" style="position: fixed; left: -9999px; top: 0; width: 850px; background: #F8FAFC; padding: 45px; border-radius: 28px; font-family: 'Plus Jakarta Sans', sans-serif;">
+    <div style="background: #FFFFFF; border-radius: 24px; padding: 40px; border: 2px solid #E9D5FF; box-shadow: 0 10px 30px rgba(124, 58, 237, 0.08);">
+      <div style="text-align: center; margin-bottom: 30px;">
+        <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; color: #7C3AED; background: #FAF5FF; padding: 4px 12px; border-radius: 20px; border: 1px solid #E9D5FF;">
+          Nossa História • 2 Anos de Amor
+        </span>
+        <h2 style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 38px; color: #0F172A; margin: 12px 0 6px 0; font-weight: 700;">
+          Top 5: Nossas Memórias Mais Marcantes
+        </h2>
+        <p style="font-size: 13px; color: #64748B; margin: 0;">16 a 20 de Outubro • Uma jornada eterna de cumplicidade e carinho</p>
+      </div>
+
+      <div id="export-milestones-container" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;">
+        <!-- Preenchido via app.js com os 5 marcos -->
+      </div>
+
+      <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #E2E8F0; text-align: center; font-size: 12px; color: #94A3B8;">
+        Feito com todo o coração para o meu grande amor • 2024 – 2026
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       POP-UP INTERATIVO DE TRILHA SONORA (EXPERIÊNCIA MUSICAL)
+       Permite à pessoa escolher se deseja ouvir com trilha sonora
+       ======================================================== -->
+  <div id="music-prompt-modal" class="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-[14px] transition-all duration-700 min-h-[100dvh]">
+    <div class="relative w-full max-w-md bg-white/95 backdrop-blur-2xl rounded-3xl p-7 sm:p-9 shadow-[0_25px_60px_-15px_rgba(124,58,237,0.35)] border border-white/90 text-center overflow-hidden transform transition-all duration-500">
+      
+      <!-- Detalhes de iluminação sutil nos cantos -->
+      <div class="absolute -top-20 -left-20 w-40 h-40 bg-purple-300/30 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-20 -right-20 w-40 h-40 bg-royal-300/30 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- Ícone com animação de pulso suave -->
+      <div class="relative mx-auto mb-5 w-20 h-20 flex items-center justify-center">
+        <div class="absolute inset-0 rounded-full bg-amethyst-200/70 animate-ping opacity-75"></div>
+        <div class="relative w-20 h-20 rounded-full bg-gradient-to-tr from-amethyst-600 via-purple-600 to-royal-800 flex items-center justify-center shadow-xl shadow-purple-600/35 text-white">
+          <svg class="w-9 h-9 text-white animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Tag de Destaque -->
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-50 text-amethyst-700 text-xs font-bold tracking-wider uppercase mb-3 border border-purple-200">
+        <svg class="w-3.5 h-3.5 text-amethyst-600" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8L12 2z"/>
+        </svg>
+        Trilha Sonora Especial
+        <svg class="w-3.5 h-3.5 text-amethyst-600" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8L12 2z"/>
+        </svg>
+      </div>
+
+      <!-- Título Emocionante -->
+      <h3 class="font-serif text-2xl sm:text-3xl font-bold text-slate-900 mb-2.5 tracking-tight leading-snug">
+        Uma música para o nosso momento...
+      </h3>
+
+      <!-- Descrição Carinhosa -->
+      <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6 max-w-xs mx-auto">
+        Preparei a clássica e marcante <strong class="text-amethyst-800">"I Was Made For Lovin' You" (KISS)</strong> para embalar nossa comemoração de dois anos. Como prefere viver este momento?
+      </p>
+
+      <!-- Botões de Escolha -->
+      <div class="flex flex-col gap-2.5">
+        <button id="music-accept-btn" type="button" class="w-full min-h-[48px] py-3 px-5 rounded-2xl bg-gradient-to-r from-amethyst-600 via-purple-600 to-royal-800 hover:from-amethyst-700 hover:to-royal-900 text-white font-bold text-sm shadow-lg hover:shadow-purple-500/35 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer touch-manipulation">
+          <span>Ouvir com Trilha Sonora</span>
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+          </svg>
+        </button>
+
+        <button id="music-decline-btn" type="button" class="w-full min-h-[44px] py-2.5 px-4 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 text-xs font-semibold active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer touch-manipulation">
+          <span>Continuar em silêncio por enquanto</span>
+        </button>
+      </div>
+
+      <!-- Nota de rodapé suave -->
+      <p class="text-[11px] text-slate-400 mt-4">
+        (Você pode pausar ou reativar a música a qualquer instante no topo da página)
+      </p>
+
+    </div>
+  </div>
+
+  <!-- Audio Player invisível (Trilha Sonora Oficial: KISS - I Was Made For Lovin' You) -->
+  <audio id="romantic-audio" loop preload="auto">
+    <source src="kiss.mp3" type="audio/mpeg">
+    <source src="https://ia800109.us.archive.org/3/items/kiss-i-was-made-for-lovin-you/Kiss%20-%20I%20Was%20Made%20For%20Lovin%27%20You.mp3" type="audio/mpeg">
+    <source src="https://assets.mixkit.co/music/preview/mixkit-romantic-moment-18.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- ========================================================
+       COMPONENTE VISUAL: NOTIFICAÇÃO FLUTUANTE (#music-toast)
+       Mensagens Afetivas Sincronizadas com a Trilha Sonora (KISS)
+       ======================================================== -->
+  <aside id="music-toast" class="flex items-center gap-3 px-4 sm:px-5 py-2.5 sm:py-3 text-slate-800" role="status" aria-live="polite">
+    <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center shrink-0 text-amethyst-600 shadow-xs">
+      <svg class="w-4 h-4 animate-pulse text-amethyst-600" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+    </div>
+    <span id="music-toast-text" class="font-serif text-xs sm:text-sm font-medium text-slate-800 leading-snug tracking-normal"></span>
+  </aside>
+
+  <!-- Animate On Scroll (AOS) JS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <!-- html2canvas JS via CDN (Para Download da Imagem) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <!-- Script principal -->
+  <script src="app.js"></script>
+</body>
+</html>

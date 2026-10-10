@@ -1,0 +1,672 @@
+/* ========================================================
+   ESTILOS CUSTOMIZADOS - PÁGINA COMEMORATIVA 2 ANOS
+   Design Editorial, Afetivo e de Estúdio Profissional
+   Paleta: Off-White (#F8FAFC), Royal (#1E40AF/#2563EB)
+   & Paleta Ametista Imperial / Lilás Radiante:
+     - #7C3AED (Roxo Lilás Vibrante - destaque marcante e sofisticado)
+     - #A855F7 (Lilás Brilhante - luminosidade e glow radiante)
+   ======================================================== */
+
+:root {
+  --bg-main: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --primary-blue: #1E40AF;
+  --primary-blue-light: #2563EB;
+  --amethyst-vibrant: #7C3AED;
+  --amethyst-light: #A855F7;
+  --amethyst-glow: rgba(168, 85, 247, 0.4);
+  --blue-glow: rgba(37, 99, 235, 0.25);
+  
+  /* Safe Area Insets para iPhones (Notch, Dynamic Island e Home Indicator) */
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+}
+
+/* Otimização Base para iOS / Safari Mobile */
+html {
+  touch-action: manipulation;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ========================================================
+   1. FUNDO ATMOSFÉRICO VIVO (GLOW DINÂMICO FIXO)
+   ======================================================== */
+body {
+  background-color: #F8FAFC;
+  background-image:
+    radial-gradient(circle at 10% 12%, rgba(37, 99, 235, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 90% 88%, rgba(168, 85, 247, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(241, 245, 249, 0.5) 0%, transparent 70%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  touch-action: manipulation;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Scrollbar refinada e discreta */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* ========================================================
+   2. MICROINTERAÇÕES E EFEITO TICK / FLIP NOS CONTADORES
+   ======================================================== */
+@keyframes digitBump {
+  0% {
+    transform: scale(1.12);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(1.0);
+    opacity: 1;
+  }
+}
+
+.digit-bump {
+  display: inline-block;
+  animation: digitBump 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+.amethyst-digit-glow {
+  text-shadow: 0 0 14px rgba(168, 85, 247, 0.45);
+}
+
+/* Animações utilitárias */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 12s linear infinite;
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 0.94;
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 3s ease-in-out infinite;
+}
+
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-float {
+  animation: float-slow 4s ease-in-out infinite;
+}
+
+/* ========================================================
+   ANIMAÇÕES DE ASTRONOMIA & FIRMAMENTO (ESTRELAS & CINTILAÇÃO)
+   ======================================================== */
+@keyframes starTwinkle1 {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.28);
+    filter: drop-shadow(0 0 5px #FFFFFF);
+  }
+}
+
+@keyframes starTwinkle2 {
+  0%, 100% {
+    opacity: 0.9;
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 4px #C084FC);
+  }
+  50% {
+    opacity: 0.28;
+    transform: scale(0.8);
+  }
+}
+
+@keyframes starTwinkle3 {
+  0%, 100% {
+    opacity: 0.38;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.22);
+    filter: drop-shadow(0 0 6px #67E8F9);
+  }
+}
+
+@keyframes starPulseSlow {
+  0%, 100% {
+    opacity: 0.25;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 0.65;
+    transform: scale(1.35);
+  }
+}
+
+.star-twinkle-1 {
+  animation: starTwinkle1 2.5s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+.star-twinkle-2 {
+  animation: starTwinkle2 3.2s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+.star-twinkle-3 {
+  animation: starTwinkle3 2.8s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+.star-pulse-slow {
+  animation: starPulseSlow 4.2s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+/* Glassmorphism refinado */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+/* ========================================================
+   SAFE AREA & AJUSTES DE LAYOUT MOBILE (iPhones 11 a 15 Pro Max)
+   ======================================================== */
+header {
+  padding-top: max(0px, env(safe-area-inset-top, 0px));
+}
+
+#lock-screen {
+  min-height: 100dvh;
+  height: 100dvh;
+  padding-top: max(1rem, env(safe-area-inset-top, 0px));
+  padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  padding-left: max(1rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1rem, env(safe-area-inset-right, 0px));
+}
+
+#debug-bar {
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  right: calc(1rem + env(safe-area-inset-right, 0px));
+}
+
+/* ========================================================
+   EQUALIZADOR & ESTADO DE ÁUDIO DA TRILHA (KISS)
+   ======================================================== */
+@keyframes eqDance1 {
+  0%, 100% { height: 4px; }
+  50% { height: 14px; }
+}
+@keyframes eqDance2 {
+  0%, 100% { height: 14px; }
+  50% { height: 6px; }
+}
+@keyframes eqDance3 {
+  0%, 100% { height: 7px; }
+  50% { height: 16px; }
+}
+
+.music-playing .eq-bar:nth-child(1) {
+  animation: eqDance1 0.65s ease-in-out infinite;
+}
+.music-playing .eq-bar:nth-child(2) {
+  animation: eqDance2 0.5s ease-in-out infinite;
+}
+.music-playing .eq-bar:nth-child(3) {
+  animation: eqDance3 0.75s ease-in-out infinite;
+}
+
+.music-playing {
+  border-color: #A855F7 !important;
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.35) !important;
+  background-color: #FAF5FF !important;
+}
+
+/* ========================================================
+   3A. FOTOS EM ESTILO POLAROID COM EFEITO FLIP 3D
+   ======================================================== */
+.polaroid-flip-container {
+  perspective: 1200px;
+  position: relative;
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform-origin: center center;
+}
+
+/* Rotação sutil e alternada na linha do tempo quando NÃO virada */
+.polaroid-odd:not(.flipped) {
+  transform: rotate(-1.4deg);
+}
+
+.polaroid-even:not(.flipped) {
+  transform: rotate(1.4deg);
+}
+
+/* Hover suave quando o card está na frente */
+.polaroid-flip-container:not(.flipped):hover {
+  transform: rotate(0deg) scale(1.025);
+}
+
+/* Container interno do giro (Aceleração por GPU para 60Hz/120Hz ProMotion) */
+.polaroid-flip-inner {
+  position: relative;
+  width: 100%;
+  transition: transform 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-style: preserve-3d;
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Estado virado */
+.polaroid-flip-container.flipped .polaroid-flip-inner {
+  transform: rotateY(180deg);
+}
+
+.polaroid-flip-container.flipped {
+  transform: rotate(0deg) scale(1.01) !important;
+}
+
+/* Faces da Polaroid */
+.polaroid-front,
+.polaroid-back {
+  width: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  border-radius: 1.25rem;
+  background-color: #FFFFFF;
+  padding: 10px 10px 18px 10px;
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 12px 30px -8px rgba(15, 23, 42, 0.08), 0 4px 10px -3px rgba(15, 23, 42, 0.04), 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+.polaroid-front {
+  position: relative;
+  z-index: 2;
+  transform: rotateY(0deg);
+}
+
+.polaroid-back {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+}
+
+.polaroid-flip-container:hover .polaroid-front,
+.polaroid-flip-container:hover .polaroid-back {
+  border-color: #D8B4FE;
+  box-shadow: 0 20px 42px -10px rgba(124, 58, 237, 0.2), 0 8px 18px -4px rgba(168, 85, 247, 0.12);
+}
+
+/* Fita adesiva artesanal no topo da Polaroid */
+.polaroid-tape {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 55px;
+  height: 14px;
+  background: rgba(243, 232, 255, 0.8);
+  backdrop-filter: blur(2px);
+  border-left: 2px dashed rgba(124, 58, 237, 0.35);
+  border-right: 2px dashed rgba(124, 58, 237, 0.35);
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ========================================================
+   TIMELINE VERTICAL - ZIGUE-ZAGUE RESPONSIVO
+   ======================================================== */
+.timeline-item {
+  position: relative;
+  transition: all 0.4s ease;
+}
+
+@media (min-width: 640px) {
+  .timeline-item:nth-child(odd) .timeline-content {
+    margin-right: auto;
+    margin-left: 0;
+    padding-right: 2.75rem;
+  }
+  .timeline-item:nth-child(even) .timeline-content {
+    margin-left: auto;
+    margin-right: 0;
+    padding-left: 2.75rem;
+  }
+}
+
+.timeline-dot {
+  position: absolute;
+  top: 1.5rem;
+  z-index: 20;
+  transition: all 0.3s ease;
+}
+
+@media (min-width: 640px) {
+  .timeline-dot {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 639px) {
+  .timeline-item .timeline-content {
+    margin-left: 2.25rem;
+    padding-left: 0.25rem;
+    width: calc(100% - 2.25rem);
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .timeline-dot {
+    left: 1rem;
+    transform: translateX(-50%);
+  }
+  .polaroid-flip-container {
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+  }
+  /* Rotação sutil no mobile para evitar overflow horizontal em telas estreitas */
+  .polaroid-odd:not(.flipped) {
+    transform: rotate(-0.8deg);
+  }
+  .polaroid-even:not(.flipped) {
+    transform: rotate(0.8deg);
+  }
+}
+
+/* Linha Guia com Preenchimento Dinâmico */
+#timeline-progress-line {
+  background: linear-gradient(180deg, #1E40AF 0%, #2563EB 40%, #7C3AED 75%, #A855F7 100%);
+  box-shadow: 0 0 14px rgba(124, 58, 237, 0.5);
+}
+
+#timeline-progress-glow {
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.95), 0 0 8px #A855F7;
+}
+
+/* Estados do Card da Timeline */
+.timeline-card-unlocked {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 12px 30px -8px rgba(15, 23, 42, 0.06), 0 4px 8px -4px rgba(15, 23, 42, 0.03);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.timeline-card-unlocked:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 35px -10px rgba(124, 58, 237, 0.14), 0 10px 20px -8px rgba(30, 64, 175, 0.1);
+  border-color: #D8B4FE;
+}
+
+/* Card Comemorativo do Dia 21 (Bodas de Algodão) */
+@keyframes anniversaryBreathe {
+  0%, 100% {
+    box-shadow: 0 16px 45px -10px rgba(124, 58, 237, 0.32), 0 0 22px rgba(168, 85, 247, 0.22);
+    border-color: #7C3AED;
+  }
+  50% {
+    box-shadow: 0 24px 55px -6px rgba(124, 58, 237, 0.5), 0 0 38px rgba(168, 85, 247, 0.45);
+    border-color: #A855F7;
+  }
+}
+
+.timeline-card-anniversary {
+  background: linear-gradient(180deg, #FFFFFF 0%, #FAF5FF 100%);
+  border: 2px solid #7C3AED !important;
+  animation: anniversaryBreathe 3.5s ease-in-out infinite;
+  position: relative;
+}
+
+.timeline-card-anniversary::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 1.5rem;
+  padding: 2px;
+  background: linear-gradient(135deg, #A855F7, #E9D5FF, #7C3AED);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Selo comemorativo físico '2 Anos Juntos' */
+.seal-anniversary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.875rem;
+  background: linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 100%);
+  border: 1.5px solid #7C3AED;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.22);
+  border-radius: 9999px;
+  color: #6D28D9;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Card Bloqueado */
+.timeline-card-locked {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px dashed #CBD5E1;
+  position: relative;
+  user-select: none;
+}
+
+.timeline-card-locked .locked-content-blur {
+  filter: blur(8px);
+  opacity: 0.4;
+  pointer-events: none;
+  transition: filter 0.5s ease, opacity 0.5s ease;
+}
+
+.timeline-lock-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(248, 250, 252, 0.72);
+  border-radius: 1.5rem;
+  text-align: center;
+}
+
+/* ========================================================
+   3B. ENVELOPE VIRTUAL COM SELO DE CERA (DIA 21)
+   ======================================================== */
+.wax-envelope {
+  position: relative;
+  background: linear-gradient(135deg, #FAF5FF 0%, #FFFFFF 50%, #F3E8FF 100%);
+  border: 2px solid #E9D5FF;
+  border-radius: 1.5rem;
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  box-shadow: 0 15px 35px -5px rgba(124, 58, 237, 0.15);
+  text-align: center;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.wax-envelope:hover {
+  box-shadow: 0 20px 45px -5px rgba(124, 58, 237, 0.25);
+  border-color: #C084FC;
+}
+
+/* Botão de Selo de Cera 3D */
+.wax-seal-btn {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #9333EA 0%, #7C3AED 55%, #581C87 100%);
+  box-shadow:
+    0 8px 20px rgba(124, 58, 237, 0.45),
+    inset 0 2px 4px rgba(255, 255, 255, 0.45),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.35);
+  border: 3px solid #E9D5FF;
+  color: #FFFFFF;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+  user-select: none;
+}
+
+.wax-seal-btn:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow:
+    0 12px 28px rgba(124, 58, 237, 0.55),
+    inset 0 2px 5px rgba(255, 255, 255, 0.5),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.4);
+}
+
+.wax-seal-btn:active {
+  transform: scale(0.95);
+}
+
+/* ========================================================
+   NOTIFICAÇÃO FLUTUANTE DE MÚSICA (#music-toast)
+   Mensagens Afetivas Sincronizadas com a Trilha Sonora (KISS)
+   ======================================================== */
+#music-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  transform: translate(-50%, 12px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 45;
+  background: rgba(255, 255, 255, 0.90);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  border-radius: 9999px;
+  box-shadow: 0 12px 30px -6px rgba(124, 58, 237, 0.22), 0 0 16px rgba(168, 85, 247, 0.16);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  width: max-content;
+  max-width: min(92vw, 540px);
+}
+
+#music-toast.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+/* Transições gerais */
+.fade-out {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: scale(0.98);
+}
+
+.fade-in {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* Rastro de Centelhas */
+.spark-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(233, 213, 255, 0.95) 0%, rgba(168, 85, 247, 0.6) 50%, rgba(124, 58, 237, 0.3) 75%, transparent 100%);
+  box-shadow: 0 0 6px rgba(168, 85, 247, 0.75);
+  animation: sparkFade 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes sparkFade {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.25) translateY(-8px);
+  }
+}
+
+/* ========================================================
+   ERGONOMIA DE TOQUE MOBILE & BYPASS DE ZOOM NO iOS
+   ======================================================== */
+button,
+a,
+input,
+select,
+textarea,
+[role="button"],
+.wax-seal-btn,
+.day-badge {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.touch-target-min {
+  min-height: 44px;
+  min-width: 44px;
+}
+
